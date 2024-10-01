@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft/2020-12/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
     "requestId": {
@@ -21,74 +21,107 @@
       "description": "status: an identifier that indicates the status of the request. Status codes shall have associated unique identifiers resolvable as specified in the IRP."
     },
     "output": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "id: the identifier of the DO."
-        },
-        "type": {
-          "type": "string",
-          "enum": ["DOIPServiceInfo"],
-          "description": "type: the DO type. Must be 0.TYPE/DO or its extension. See Types section."
-        },
-        "attributes": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "serviceName": {
-              "type": "string",
-              "description": "the name of the DOIP service."
-            },
-            "serviceDescription": {
-              "type": "string",
-              "description": "the description of the service."
-            },
-            "ipAddress": {
-              "type": "string",
-              "description": "the IP address of the service."
-            },
-            "port": {
-              "type": "integer",
-              "minimum" : 0,
-              "maximum" : 65535,
-              "description": "the listening port on the IP address."
-            },
-            "protocol": {
-              "type": "string",
-              "description": "the default shall be ‘TCP’."
-            },
-            "protocolVersion": {
-              "type": "string",
-              "description": "highest version of the DOIP protocol supported."
-            },
-            "publicKey": {
-              "type": "string",
-              "description": "the public key expressed in JWK format as a default."
-            }
-          },
-          "required": [
-            "ipAddress",
-            "port",
-            "protocol",
-            "protocolVersion",
-            "publicKey"
-          ],
-          "description": "attributes: one or more fields (key-value pairs) serialized as a JSON (sub) object."
-        }
-      },
-      "required": [
-        "id",
-        "type",
-        "attributes"
-      ]
+      "type": "object"
     }
+  },
+  "if": {
+    "properties": {
+      "status": {
+        "const": "0.DOIP/Status.001"
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "output": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "id: the identifier of the DO."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "DOIPServiceInfo"
+            ],
+            "description": "type: the DO type. Must be 0.TYPE/DO or its extension. See Types section."
+          },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "serviceName": {
+                "type": "string",
+                "description": "the name of the DOIP service."
+              },
+              "serviceDescription": {
+                "type": "string",
+                "description": "the description of the service."
+              },
+              "ipAddress": {
+                "type": "string",
+                "description": "the IP address of the service."
+              },
+              "port": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 65535,
+                "description": "the listening port on the IP address."
+              },
+              "protocol": {
+                "type": "string",
+                "description": "the default shall be ‘TCP’."
+              },
+              "protocolVersion": {
+                "type": "string",
+                "description": "highest version of the DOIP protocol supported."
+              },
+              "publicKey": {
+                "type": "string",
+                "description": "the public key expressed in JWK format as a default."
+              }
+            },
+            "required": [
+              "ipAddress",
+              "port",
+              "protocol",
+              "protocolVersion",
+              "publicKey"
+            ],
+            "description": "attributes: one or more fields (key-value pairs) serialized as a JSON (sub) object."
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ]
+      }
+    }
+  },
+  "else": {
+    "properties": {
+      "output": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "message"
+        ]
+      }
+    },
+    "unevaluatedProperties": false
   },
   "required": [
     "status",
     "output"
   ],
-  "additionalProperties": false,
-  "description": "reponse of a O.DOIP/Op.Hello request"
+  "unevaluatedProperties": false,
+  "description": "response of a O.DOIP/Op.Hello request"
 }
