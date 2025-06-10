@@ -32,9 +32,20 @@
           },
           "required": ["21.T11966/FdoProfile"],
           "description": "record: the JSON object containing all type-value-pairs that are written into the PID record at DO creation."
+        },
+        "file-attributes": {
+          "type": "object",
+          "description": "A dictionary, that maps attribute PIDs to the provided elements. Elements need to be identified via the ID that is provided for the element in the DOIP call. URLs that allow to download the elements will be inserted as values in the corresponding attributes and added to the provided 'record'.",
+          "examples": [
+            {
+              "21.T11966/aabb1232eee11341": "first_file_identifier",
+              "21.T11966/aabb1232eeeccccc": ["second_file_identifier", "second_file_identifier"]
+            }
+          ]
         }
       },
       "required": ["record"],
+
       "description": "attributes: mandatory JSON object to specify the type-value pairs for the PID record"
     },
     "authentication": {
